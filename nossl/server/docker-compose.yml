@@ -1,0 +1,40 @@
+version: "3.3"
+
+services:
+  nginx-proxy:
+    image: jwilder/nginx-proxy
+    ports:
+      - 80:80
+    volumes:
+      - conf:/etc/nginx/conf.d
+      - vhost:/etc/nginx/vhost.d
+      - html:/usr/share/nginx/html
+      - dhparam:/etc/nginx/dhparam
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+    restart: always
+
+  db: 
+    build: ./mysql
+    container_name: db
+    volumes:
+      - db_data:/var/lib/mysql
+    ports:
+      - 3307:3306
+    environment: 
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: devx3
+      MYSQL_USER: er!666#MY
+      MYSQL_ROOT_HOST: '%'
+    restart: always
+      
+volumes:
+  conf:
+  vhost:
+  html:
+  dhparam:
+  db_data:
+
+networks:
+  default:
+    external: 
+      name: nginx-proxy
